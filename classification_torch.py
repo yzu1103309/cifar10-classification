@@ -9,17 +9,24 @@ import os
 # hyper-params
 batch_size = 100
 lr = 0.001
-epoch = 20
+epoch = 10
 seed = 12345
 
-trans_method = transforms.Compose([
+train_trans_method = transforms.Compose([
+    transforms.RandomCrop(32, padding=4),
+    transforms.RandomHorizontalFlip(p=0.5),
     transforms.ToTensor(),     # This will map the pixels to 0~1
-    transforms.Normalize((.5, .5, .5), (.5, .5, .5))    # map the pixels to -1~1
+    transforms.Normalize(mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010]),    # map the pixels to -1~1
+])
+
+test_trans_method = transforms.Compose([
+    transforms.ToTensor(),     # This will map the pixels to 0~1
+    transforms.Normalize(mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010]),    # map the pixels to -1~1
 ])
 
 # load data
-train_data = datasets.CIFAR10(root='./data', train=True, download=True, transform=trans_method)
-test_data = datasets.CIFAR10(root='./data', train=False, download=True, transform=trans_method)
+train_data = datasets.CIFAR10(root='./data', train=True, download=True, transform=train_trans_method)
+test_data = datasets.CIFAR10(root='./data', train=False, download=True, transform=test_trans_method)
 
 train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=False)
