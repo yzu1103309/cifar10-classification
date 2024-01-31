@@ -3,12 +3,12 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import os
 
 # hyper-params
 batch_size = 100
-lr = 0.001
+lr = 0.0001
 epoch = 10
 seed = 12345
 
