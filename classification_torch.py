@@ -8,8 +8,8 @@ import os
 
 # hyper-params
 batch_size = 100
-lr = 0.0001
-epoch = 10
+lr = 0.001
+epoch = 20
 seed = 12345
 
 trans_method = transforms.Compose([
@@ -104,7 +104,7 @@ for e in range(epoch):
         batch_loss.backward()
         optimizer.step()
 
-        if (batch+1) % 100 == 0:
+        if (batch+1) % 10 == 0:
             print(f"\rloss: {batch_loss.item()} [{batch_size * (batch+1)}/{len(train_loader.dataset)}]", end='')
 
     # evaluating
