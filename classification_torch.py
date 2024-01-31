@@ -104,7 +104,7 @@ for e in range(epoch):
         batch_loss.backward()
         optimizer.step()
 
-        if (batch+1) % 1 == 0:
+        if (batch+1) % 100 == 0:
             print(f"\rloss: {batch_loss.item()} [{batch_size * (batch+1)}/{len(train_loader.dataset)}]", end='')
 
     # evaluating
