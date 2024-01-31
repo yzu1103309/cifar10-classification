@@ -1,0 +1,32 @@
+name: Train Model
+on:
+  workflow_dispatch:
+    inputs:
+      os:
+        type: choice
+        description: OS to run on.
+        options:
+          - ubuntu-latest
+jobs:
+  training:
+    runs-on: ${{ github.event.inputs.os }}
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v2
+
+      - name: 🏗 Set up Python 3.10.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10.12
+
+      - name: 📦 Install dependencies
+        run:  pip install -r requirements.txt
+
+      - name: 👷 Training Model
+        run: python3 classification_torch.py
+
+      - name: 📱 Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: prediction.csv
+          path: ./model.pth
