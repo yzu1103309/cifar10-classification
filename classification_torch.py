@@ -6,6 +6,9 @@ import numpy as np
 # import matplotlib.pyplot as plt
 import os
 
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+
 # hyper-params
 batch_size = 100
 lr = 0.001
@@ -25,8 +28,8 @@ test_trans_method = transforms.Compose([
 ])
 
 # load data
-train_data = datasets.CIFAR10(root='./data', train=True, download=True, transform=train_trans_method)
-test_data = datasets.CIFAR10(root='./data', train=False, download=True, transform=test_trans_method)
+train_data = datasets.CIFAR10(root='../../data', train=True, download=True, transform=train_trans_method)
+test_data = datasets.CIFAR10(root='../../data', train=False, download=True, transform=test_trans_method)
 
 train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_data, batch_size=batch_size, shuffle=False)
@@ -104,6 +107,7 @@ for e in range(epoch):
     # training
     model.train()
     for batch, (X, y) in enumerate(train_loader):
+        X, y = X.to(device), y.to(device)
         pred = model(X)
         batch_loss = criterion(pred, y)
 
@@ -119,6 +123,7 @@ for e in range(epoch):
     test_loss, correct = 0, 0
     with torch.no_grad():
         for X, y in test_loader:
+            X, y = X.to(device), y.to(device)
             pred = model(X)
             pred_label = pred.argmax(dim=1)  # _, pred_label = torch.max(pred, dim=1)
             test_loss += criterion(pred, y).item()
